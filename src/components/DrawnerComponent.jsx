@@ -18,7 +18,7 @@ export default function DrawnerComponent({
         ></div>
       )}
       <div
-        className={`fixed inset-y-0 left-0 z-50 bg-white shadow-lg transition-transform transform ${
+        className={`fixed inset-y-0 left-0 z-50 bg-white transition-transform transform ${
           open ? "translate-x-0" : "-translate-x-full"
         } ${className}`}
       >

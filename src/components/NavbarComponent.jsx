@@ -216,7 +216,7 @@ export default function NavbarComponent() {
     } else {
       setIsOpen(true);
     }
-  }, []);
+  }, [screenSize.width]);
 
   return (
     <>
