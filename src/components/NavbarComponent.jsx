@@ -41,6 +41,7 @@ import DrawnerComponent from "./DrawnerComponent";
 export default function NavbarComponent() {
   const screenSize = useScreenSize();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOverlayOpen, setOverlayOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [open, setOpen] = useState(0);
 
@@ -56,8 +57,18 @@ export default function NavbarComponent() {
     },
   ];
 
-  const openDrawer = () => setIsOpen(true);
-  const closeDrawer = () => setIsOpen(false);
+  const openDrawer = () => {
+    if (screenSize.width < 540) {
+      setOverlayOpen(true);
+    }
+    setIsOpen(true);
+  };
+  const closeDrawer = () => {
+    if (screenSize.width < 540) {
+      setOverlayOpen(false);
+    }
+    setIsOpen(false);
+  };
 
   const hamburg = (
     <IconButton variant="text" size="sm">
@@ -211,19 +222,20 @@ export default function NavbarComponent() {
   );
 
   useEffect(() => {
-    if (screenSize.width < 640) {
+    if (screenSize.width < 540) {
       setIsOpen(false);
     } else {
       setIsOpen(true);
+      setOverlayOpen(false);
     }
   }, [screenSize.width]);
 
   return (
     <>
-      <Navbar className="fixed w-full max-w-full py-0 px-2 rounded-none h-[5rem]  border-b-gray-200 content-evenly z-[9999] bg-opacity-1 shadow-none">
+      <Navbar className="fixed w-full max-w-full py-0 px-2 rounded-none h-[5rem] z-50 border-b-gray-200 content-evenly bg-opacity-1 shadow-none">
         <div className=" mx-auto flex items-center justify-between text-blue-gray-900">
           <div className="flex items-center gap-2 ">
-            {screenSize.width < 640 ? hamburg : null}
+            {screenSize.width < 540 ? hamburg : null}
             <img
               src={ceprunsalogo2}
               alt="logo-ceprunsa"
@@ -262,7 +274,7 @@ export default function NavbarComponent() {
                   />
                 </Button>
               </MenuHandler>
-              <MenuList className="p-1 z-[9999]">
+              <MenuList className="p-1">
                 {profileMenuItems.map(({ label, icon }, key) => {
                   const isLastItem = key === profileMenuItems.length - 1;
                   return (
@@ -302,7 +314,7 @@ export default function NavbarComponent() {
         open={isOpen}
         className="w-[15rem] z-[9998]"
         onClose={closeDrawer}
-        overlay={screenSize.width < 640 ? true : false}
+        overlay={isOverlayOpen}
         position="left"
         children={contentSideBar}
       />
